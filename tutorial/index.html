@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.1.6/dist/vue.js"></script>
+
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<style>
+  .active {
+    color: red;
+  }
+</style>
+<body>
+  <div id="app">
+    {{ message }}
+    
+    <br>
+    <br>
+
+    <!-- v-bind -->
+    <!-- v-bind:エレメントを:エレメントに省略可能 -->
+    <a :href="google">googleへのリンク</a><br>   
+    <a :href="book.url">{{ book.title }}</a><br>
+    <div :style="{fontSize:fontSize}">styleテスト</div><br>
+    <div :class="{active:isActive}">classテスト</div>
+    <br>
+    <br>
+    
+    <!-- v-show -->
+    <div v-show="isDisplay">trueなら表示</div>
+    <div v-show="!isDisplay">falseなら表示</div>
+    <br>
+    <br>
+
+    <!-- v-if -->
+    <!-- <div v-if="isDisplay">ifで表示</div> -->
+    <div v-if="signal === 'red'">赤</div>
+    <div v-else-if="signal === 'yellow'">黄色</div>
+    <div v-else-if="signal === 'blue'">青</div>
+    <div v-else>どれにも当てはまりません</div>
+
+    <!-- v-for -->
+    <!-- 配列 (value, index) -->
+    <ul>
+      <li v-for="(member, index) in members">
+        {{ index }} : {{ member }}
+      </li>
+    </ul>
+    <br>
+    <br>
+
+    <!-- オブジェクト(valie) -->
+    <ul>
+      <li v-for="value in book">
+        {{ value }}
+      </li>
+    </ul>
+    <br>
+    <br>
+
+    <!-- オブジェクト(value, key) -->
+    <ul>
+      <li v-for="(value, key) in book">
+       {{ key }} : {{ value }}
+      </li>
+    </ul>
+    <br>
+    <br>
+
+    <!-- オブジェクト(value, key, index) -->
+    <ul>
+      <li v-for="(value, key, index) in book">
+       {{ index }} {{ key }} : {{ value }}
+      </li>
+    </ul>
+    <br>
+    <br>
+
+    <!-- 複数のオブジェクト -->
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>タイトル</th>
+          <th>著者</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="book in books" :key="book.id">
+          <td>{{ book.id }}</td>
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.url }}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <br>
+    <br>
+    
+    <div v-text="test"></div>
+    <div v-html="test"></div>
+
+    <br>
+    <br>
+
+    <!--v-on -->
+    <button v-on:click="btnClick">ボタン</button>
+    <button @click="btnClick">ボタン</button>
+    <button @click="btnClickEvent">Eventボタン</button>
+    <button @click="btnClickArgs(1)">引数ボタン</button>
+    <button @click="btnClickArgsEvent(1, $event)">引数,Eventボタン</button>
+    <br>
+    <br>
+
+    <!-- conmputed -->
+    {{ totalPrice }}
+    <br>
+    <br>
+
+    <!-- v-model -->
+    <form>
+      氏名
+      <input type="text" v-model="contact.name">
+      <br>
+      電話番号
+      <input type="tel" v-model="contact.phoneNumber">
+      <br>
+      メールアドレス
+      <input type="email" v-model="contact.email">
+      <br>
+      性別
+      <input type="radio" value="male" v-model="contact.gender">男性
+      <input type="radio" value="female" v-model="contact.gender">女性
+      <input type="radio" value="other" v-model="contact.gender">その他
+      <br>
+      年齢
+      <select v-model="contact.age">
+        <option disabled value="">年齢を選択してください</option>
+        <option>10代</option>
+        <option>20代</option>
+        <option>30代</option>
+        <option>40代</option>
+      </select>
+      <br>
+      メッセージ
+      <textarea v-model="contact.message"></textarea>
+      <br>
+      サイトを知ったきっかけ
+      <input type="checkbox" value="webサイト" v-model="contact.attract">webサイト
+      <input type="checkbox" value="チラシ" v-model="contact.attract">チラシ
+      <input type="checkbox" value="その他" v-model="contact.attract">その他
+      <br>
+      注意事項
+      <input type="checkbox" v-model="contact.coution">
+      <br>
+      <input type="submit" value="送信">
+    </form>
+
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: '#app',  //仮想DOM
+      data(){  //初期設定
+        return {
+          message: "Hello Vue!",  //キー(key):値(value)
+          google: 'https://google.com',
+          book: {
+            title: 'タイトル',
+            url: 'https://google.com',
+          },
+          fontSize: '2rem',
+          isActive: true,
+
+          isDisplay: false,
+
+          signal: 'red',
+
+          members: [
+            '本田',
+            '香川',
+            '長門'
+          ],
+          book: {
+            title: 'タイトル',
+            author: '著者',
+            url: 'https://google.com',
+          },
+
+          books:[
+            {
+              id: 1,
+              title: 'タイトル1',
+              author: '著者1',
+              url: 'https://google.com',
+            },
+            {
+              id: 2,
+              title: 'タイトル2',
+              author: '著者2',
+              url: 'https://google.com',
+            },
+            {
+              id: 3,
+              title: 'タイトル3',
+              author: '著者3',
+              url: 'https://google.com',
+            },
+          ],
+          test: 'teeeee <br> stttttttttt',
+          price: 1,
+          number: 1,
+          contact:{
+            name: '',
+            phoneNumber: '',
+            email: '',
+            age: '',
+            gender: '',
+            message: '',
+            attract: [],
+            coution: false
+          }
+        }
+      },
+      methods: {
+        btnClick(){
+          console.log('Vue クリック')
+        },
+        btnClickEvent(e){
+          console.log(e);
+        },
+        btnClickArgs(int){
+          console.log(int);
+        },
+        btnClickArgsEvent(int,e){
+          console.log(int,e);
+        }
+      },
+      computed: {
+        // totalPrice(){
+        //   return this.price * this.number
+        // }
+        totalPrice: app => app.number * app.price  // 省略形、アロー関数で引数にインスタンス名を入れる
+      },
+      watch: { //キーの値を監視する
+       books:{
+         handler(){
+           console.log('変更されました')
+        },
+        deep: true
+       }
+      },
+    })
+  </script>
+</body>
+</html>
